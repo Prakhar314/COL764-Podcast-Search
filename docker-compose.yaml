@@ -1,0 +1,19 @@
+services:
+  test:
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    image: tensorflow/tensorflow:latest-gpu-jupyter
+    command: python -c "import tensorflow as tf;print(tf.config.list_physical_devices('GPU'))"
+    devices:
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-modeset:/dev/nvidia-modeset
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
+    volumes:
+      - .:/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
